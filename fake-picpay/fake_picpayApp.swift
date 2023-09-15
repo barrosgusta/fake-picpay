@@ -12,6 +12,9 @@ struct fake_picpayApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark)
+                .background(.black)
         }
+        .windowStyle(.hiddenTitleBar)   
     }
 }
