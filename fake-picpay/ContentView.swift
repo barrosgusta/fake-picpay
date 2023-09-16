@@ -47,35 +47,54 @@ struct ContentView: View {
                     }
                 }
 
-            Button("Realizar Pagamento") {
-                if fakeDest == "" {
-                    isModalPresented = false
-                    showAlert = true
-                    alertTitleMessage = "Informe um destinatário!"
-                } else if transferValue > balance {
-                    isModalPresented = false
-                    showAlert = true
-                    alertTitleMessage = "Saldo insuficiente!"
-                } else {
-                    showAlert = false
-                    isModalPresented = true
-                    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
-                        balance -= transferValue
-                        timer.invalidate()
-                    }
+            HStack {
+                Button("Voltar") {
+                    print("back")
                 }
+                .controlSize(.large)
                 
-                
-                fakeDest = ""
-                transferTextValue = ""
+                Button("Realizar Pagamento") {
+                    self.handleFakeTransfer()
+                }
+                .alert(isPresented: $showAlert) {
+                    alert
+                }
+                .sheet(isPresented: $isModalPresented) {
+                    ModalView(
+                        isModalPresented: $isModalPresented,
+                        fakeDest: $fakeDest,
+                        transferValue: $transferValue
+                    )
+                }
+                .controlSize(.large)
+                .buttonStyle(.borderedProminent)
+                .keyboardShortcut(.defaultAction)
+                .onSubmit {
+                    self.handleFakeTransfer()
+                }
             }
-            .alert(isPresented: $showAlert) {
-                alert
-            }
-            .padding(10)
-            
-            .sheet(isPresented: $isModalPresented) {
-                ModalView(isModalPresented: $isModalPresented)
+        }
+    }
+    
+    func handleFakeTransfer() {
+        if fakeDest == "" {
+            isModalPresented = false
+            showAlert = true
+            alertTitleMessage = "Informe um destinatário!"
+        } else if transferValue > balance {
+            isModalPresented = false
+            showAlert = true
+            alertTitleMessage = "Saldo insuficiente!"
+        } else if transferValue <= 0 {
+            isModalPresented = false
+            showAlert = true
+            alertTitleMessage = "Insira um valor válido!"
+        } else {
+            showAlert = false
+            isModalPresented = true
+            Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
+                balance -= transferValue
+                timer.invalidate()
             }
         }
     }
