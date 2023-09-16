@@ -9,15 +9,13 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-    @State private var balance: Decimal = 15045610
+    @State private var balance: Decimal = 14768532.24
     @State private var transferValue: Decimal = 0
     @State private var transferTextValue: String = ""
     @State private var fakeDest: String = ""
     @State private var isModalPresented = false
     @State private var showAlert = false
     @State private var alertTitleMessage: String = ""
-    let test: NSNumber = 10000
-    
     
     var body: some View {
         VStack {
@@ -28,7 +26,7 @@ struct ContentView: View {
                 .padding()
             
             if let Value = CurrencyFormatter.shared.string(from: balance as NSNumber) {
-                Text("Saldo disponível = \(Value)")
+                Text("Saldo disponível: \(Value)")
                     .font(.title2)
                     .padding()
             }
@@ -62,7 +60,6 @@ struct ContentView: View {
                     showAlert = false
                     isModalPresented = true
                     Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { timer in
-                        print(transferValue)
                         balance -= transferValue
                         timer.invalidate()
                     }
@@ -81,7 +78,6 @@ struct ContentView: View {
                 ModalView(isModalPresented: $isModalPresented)
             }
         }
-        .frame(minWidth: 1180, maxWidth: 1180, minHeight: 620, maxHeight: 620)
     }
 
     var alert: Alert {

@@ -18,7 +18,9 @@ struct ModalView: View {
             if isLoading {
                 LoadingView(progress: $progress, progressText: $progressText)
                     .onAppear() {
-                        Timer.scheduledTimer(withTimeInterval: 0.4, repeats: true) { timer in
+                        let timeInterval = Double.random(in: 0.2...1)
+                        print(timeInterval)
+                        Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { timer in
                             progress += 0.1
                             if progress >= 1.0 {
                                 isLoading = false
@@ -74,10 +76,10 @@ struct MainContentView: View {
                 .opacity(0.5)
             VStack {
                 Text("Pagamento enviado!")
-                    .font(.title)
+                    .font(.largeTitle)
                     .padding()
                 Text("Efetividade dentro de 24 horas")
-                    .font(.subheadline)
+                    .font(.title2)
                     .padding()
 
                 Button("Continuar") {
